@@ -13,12 +13,10 @@ slack_app = AsyncApp(token=bot_token, signing_secret=signing_secret)
 @slack_app.event("message")
 async def handle_event(body, say, logger):
     #write code for what will happen when you aapp is mentioned
-
     
     # logger.info(body)
     
     message = body["event"]["text"]
-    
 
     result = await agent.run(message)
     

@@ -65,9 +65,7 @@ class FileUploader:
                 })
                 
                 continue
-
             
-    
             upload_file = await self.upload_file(file,file_path)
 
             if not upload_file["uploaded"]:

@@ -8,35 +8,30 @@ from docling.document_converter import DocumentConverter
 from models.postgre.file import File
 from core.config import Settings
 from supabase import AsyncClient
-
-
+from docling.chunking import HybridChunker
 
 
 class FileParser:
-    def __init__(self,supabase_client:AsyncClient,db:AsyncSession,doc_converter = DocumentConverter()):
-        self.db = db
-        self.converter = doc_converter
-        self.bucket = Settings.SUPABASE_BUCKET
+    def __init__(self,supabase_client:AsyncClient, db:AsyncSession):
         self.supabase = supabase_client
+        self.db = db
 
-    async def run(self) -> List[dict]:
-        """ Generate a list of dictionaries of each file
+        self.bucket = Settings.SUPABASE_BUCKET
+
+        self.converter = DocumentConverter()
+        self.chunker = HybridChunker()
         
-        dict - filename
-               file_content
-               page_char_coount
-               token_count
-
-        """
-        files = await self.supabase.storage.from_(self.bucket).list("uploads")
+    async def _load_docs(self) -> List[dict]:
+        files = await self.supabase.strong.from_(self.bucket).list("uploads")
 
         if not files:
             return "No files in the supabase directory"
         
-        markdown_result = []
+        parsed_files = []
 
         for file in files:
             file_name = file["name"]
+
             original_file_name = await self.get_original_filename(file_name)
 
             if file_name == ".emptyFolderPlaceholder":
@@ -50,39 +45,54 @@ class FileParser:
             source = DocumentStream(name=file_name, stream=buf)
 
             result = self.converter.convert(source)
-            markdown_text = result.document.export_to_markdown(page_break_placeholder="new_page")
 
             
-
-            # converter = self.converter.convert(file_path)
-            # markdown_text = converter.document.export_to_markdown()
-
-
+            markdown_text = result.document
+        
             doc_data = {
-                "filename":original_file_name,
-                "file_content" : markdown_text,
-                "page_char_count": len(markdown_text),
-                "token_count":len(markdown_text)/4
+                "filename": original_file_name,
+                "file_content": markdown_text,
             }
 
-            markdown_result.append(doc_data)
+            parsed_files.append(doc_data)
 
-        return markdown_result 
+        return parsed_files 
         
+    async def _chunk_files(self, parsed_files:List[dict]):
+        formatted_records = []
 
-    # async def read_files(self) -> List:
-    #     folder_paths = []
+        for file in parsed_files:
+            doc_chunks = self.chunker.chunk(file.file_content)
+            
+            page_details = []
 
-    #     for path in self.directory_path.iterdir():
-    #         folder_paths.append(path)
+            for chunk in doc_chunks:
+                chunk_text = self.chunker.serizlize(chunk)
 
-    #     return folder_paths
-    
-    # async def generate_page_chunks(self,page_cotent)-> List[str]:
+                page_numbers = set()
+
+                if hasattr(chunk, "meta") and chunk.meta.doc.items:
+                    for item in chunk.meta.doc_items:
+                        if hasattr(item, "prov") and item.prov:
+                            for p in item.prov:
+                                page_numbers.add(p.page_no)
+
+            primary_page = min(page_numbers) if page_numbers else 1
+
+        #at this point we have parsed per page and let's say our list
+
+        formatted_records.append({
+            "content": chunk_text,
+            "meta_data": {
+                "page_number": primary_page,
+                "all_spanned_pages": list(page_numbers),
+                "heading": chunk.meta.headings[0] if chunk.meta.heading else None
+            }
+        })
 
 
-        
-    async def get_original_filename(self,file_name:str) -> str:
+
+    async def _get_original_filename(self,file_name:str) -> str:
         get_filename = select(File.original_name).where(File.stored_name == file_name)
         result = await self.db.execute(get_filename)
 
@@ -90,7 +100,24 @@ class FileParser:
 
         return original_name
 
-    
+
+"""
+list per page of the document
+
+that would include 
+- original file name
+- page number
+- page content
+- page_char_count
+- page token_count
+
+
+
+
+"""
+
+
+
 
 
 

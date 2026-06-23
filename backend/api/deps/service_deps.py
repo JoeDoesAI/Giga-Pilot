@@ -2,7 +2,7 @@
 from fastapi import Depends
 
 from services.file_service.file_uploader import FileUploader
-from api.deps.db_deps import get_db,get_qdrant
+from api.deps.db_deps import get_db
 from api.deps.uploader_deps import get_supabase
 
 
@@ -23,8 +23,7 @@ async def get_uploader(db = Depends(get_db),supabase=Depends(get_supabase)) -> F
 
 async def get_ingestion(
     supabase_client = Depends(get_supabase),
-    db = Depends(get_db),
-    qdrant=Depends(get_qdrant)
+    db = Depends(get_db)
 ) -> IngestionOchestrator:
     
    
