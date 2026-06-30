@@ -1,28 +1,22 @@
-# standard library
 import os
 from datetime import timedelta
 
-# third-party
 from fastapi import APIRouter, Depends, HTTPException
 
-# local imports (your app)
+from api.deps.db_deps import get_db
 from core.config import Settings
 from core.security import create_access_token, hash_password
-
-from schemas.auth import UserCreate, UserLogin
+from db.postgre.session import AsyncSession
 from schemas.token_bearer import Token
-
+from schemas.auth import UserCreate, UserLogin
 from services.auth_service.auth import authenticate_user, create_user
 
-from api.deps.db_deps import get_db
-from db.postgre.session import AsyncSession
 
 auth_router = APIRouter()
 
 ACCESS_CODE = os.getenv("ACCESS_CODE")
 
 
-    
 @auth_router.post("/register")
 async def register(user:UserCreate,db:AsyncSession = Depends(get_db)):
     old_user = await authenticate_user(db, user.email, user.password)
@@ -37,8 +31,6 @@ async def register(user:UserCreate,db:AsyncSession = Depends(get_db)):
     
     return new_user
 
-    
-    pass 
 
 @auth_router.post("/login")
 async def login(
