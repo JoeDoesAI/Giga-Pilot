@@ -9,6 +9,8 @@ __pycache__/
 
 uploads/
 
-answerflow.db
+answerflow.database
 
 experimental/
+
+todo.md

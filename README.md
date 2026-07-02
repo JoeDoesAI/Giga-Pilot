@@ -19,7 +19,7 @@ flowchart LR
   end
  subgraph supabase["Supabase"]
         auth["Auth<br>email session"]
-        db[("Postgres<br>chats, documents, chunks<br>pgvector + full-text")]
+        database[("Postgres<br>chats, documents, chunks<br>pgvector + full-text")]
   end
     user["Technician"] --> browser["Browser<br>React chat app"]
     frontend -- serves app --> browser
@@ -27,12 +27,12 @@ flowchart LR
     auth -- JWT session --> browser
     browser -- chat request + JWT --> backend
     backend -- verify user --> auth
-    backend -- retrieve passages<br>persist chats + citations --> db
+    backend -- retrieve passages<br>persist chats + citations --> database
     backend -- generate grounded answer --> gemini["Gemini<br>LLM + embeddings"]
     backend -- stream answer + citations --> browser
     corpus["OEM technical manuals, wiring schematics"] --> ingestion["Ingestion pipeline<br>download, parse, chunk, embed"]
     ingestion -- create embeddings --> gemini
-    ingestion -- store documents + chunks --> db
+    ingestion -- store documents + chunks --> database
   
 
 ```
