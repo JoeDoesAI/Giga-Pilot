@@ -3,7 +3,7 @@ from fastapi.responses import StreamingResponse
 
 from api.deps.auth import get_current_user
 from schemas.qa import QA_Response
-from services.qa.ochestrator import RetrivalOchestrator
+from backend.services.retrival.ochestrator import RetrivalOchestrator
 
 
 

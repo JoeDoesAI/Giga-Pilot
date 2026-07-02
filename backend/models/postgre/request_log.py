@@ -1,14 +1,15 @@
-from sqlalchemy import Column, Integer, String
-from db.postgre.engine import Base
+from sqlalchemy import String, Integer
+from sqlalchemy.orm import Mapped, mapped_column
+from database.postgre.engine import Base
 
 
 class RequestLog(Base):
     __tablename__ = "request_log"
-    
-    id = Column(Integer, primary_key=True, index=True)
-    date = Column(String, index=True)
-    time = Column(String, index=True)
-    method = Column(String, index=True)
-    url = Column(String, index=True)
-    status_code = Column(String, index=True)
-    client_ip = Column(String, index=True)
+
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    date: Mapped[str] = mapped_column(String, index=True)
+    time: Mapped[str] = mapped_column(String, index=True)
+    method: Mapped[str] = mapped_column(String, index=True)
+    url: Mapped[str] = mapped_column(String, index=True)
+    status_code: Mapped[str] = mapped_column(String, index=True)
+    client_ip: Mapped[str] = mapped_column(String, index=True)

@@ -609,7 +609,7 @@ Traceback (most recent call last):
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\api\routes\file_upload.py", line 162, in upload_files
     process_docs = RAGPipeline()
                    ^^^^^^^^^^^^^
-TypeError: RAGPipeline.__init__() missing 1 required positional argument: 'db'
+TypeError: RAGPipeline.__init__() missing 1 required positional argument: 'database'
 2026-01-23 14:21:58,258 - INFO - 3 changes detected
 2026-01-23 14:29:55,542 - INFO - 1 change detected
 2026-01-23 14:29:55,544 - WARNING - WatchFiles detected changes in 'services\rag_pipeline.py'. Reloading...
@@ -1009,7 +1009,7 @@ Traceback (most recent call last):
     return await dependant.call(**values)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\api\routes\file_upload.py", line 74, in upload_file
-    await db.refresh()
+    await database.refresh()
           ^^^^^^^^^^^^
 TypeError: AsyncSession.refresh() missing 1 required positional argument: 'instance'
 2026-01-27 15:57:26,038 - INFO - 4 changes detected
@@ -1078,9 +1078,9 @@ Traceback (most recent call last):
     uploader = await upload.run(files)
                ^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\services\file_service\file_uploader.py", line 86, in run
-    await self.save_file_name(self.db,filename,unique_filename)
+    await self.save_file_name(self.database,filename,unique_filename)
                               ^^^^^^^
-AttributeError: 'FileUploader' object has no attribute 'db'
+AttributeError: 'FileUploader' object has no attribute 'database'
 2026-02-10 12:50:02,293 - INFO - 1 change detected
 2026-02-10 12:53:05,649 - INFO - 1 change detected
 2026-02-10 12:53:05,649 - WARNING - WatchFiles detected changes in 'api\deps\service_deps.py'. Reloading...
@@ -1199,9 +1199,9 @@ Traceback (most recent call last):
     uploader = await upload.run(files)
                ^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\services\file_service\file_uploader.py", line 86, in run
-    await self.save_file_name(self.db,filename,unique_filename)
+    await self.save_file_name(self.database,filename,unique_filename)
                               ^^^^^^^
-AttributeError: 'FileUploader' object has no attribute 'db'
+AttributeError: 'FileUploader' object has no attribute 'database'
 2026-02-10 12:55:08,188 - INFO - 1 change detected
 2026-02-10 12:57:54,377 - INFO - 1 change detected
 2026-02-10 12:57:54,382 - WARNING - WatchFiles detected changes in 'services\file_service\file_uploader.py'. Reloading...
@@ -1320,9 +1320,9 @@ Traceback (most recent call last):
     uploader = await upload.run(files)
                ^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\services\file_service\file_uploader.py", line 87, in run
-    await self.save_file_name(self.db,filename,unique_filename)
+    await self.save_file_name(self.database,filename,unique_filename)
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\services\file_service\file_uploader.py", line 137, in save_file_name
-    db.add(new_file)
+    database.add(new_file)
     ^^^^^^
 AttributeError: 'Depends' object has no attribute 'add'
 2026-02-10 12:59:07,762 - INFO - 2 changes detected
@@ -1442,9 +1442,9 @@ Traceback (most recent call last):
     uploader = await upload.run(files)
                ^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\services\file_service\file_uploader.py", line 87, in run
-    await self.save_file_name(self.db,filename,unique_filename)
+    await self.save_file_name(self.database,filename,unique_filename)
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\services\file_service\file_uploader.py", line 137, in save_file_name
-    db.add(new_file)
+    database.add(new_file)
     ^^^^^^
 AttributeError: 'Depends' object has no attribute 'add'
 2026-02-10 13:04:10,362 - INFO - 1 change detected
@@ -1567,9 +1567,9 @@ Traceback (most recent call last):
     uploader = await upload.run(files)
                ^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\services\file_service\file_uploader.py", line 87, in run
-    await self.save_file_name(self.db,filename,unique_filename)
+    await self.save_file_name(self.database,filename,unique_filename)
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\services\file_service\file_uploader.py", line 137, in save_file_name
-    db.add(new_file)
+    database.add(new_file)
     ^^^^^^
 AttributeError: 'function' object has no attribute 'add'
 2026-02-10 13:05:37,056 - INFO - 2 changes detected
@@ -1689,7 +1689,7 @@ Traceback (most recent call last):
     solved = await call(**solved_result.values)
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\api\deps\service_deps.py", line 12, in get_uploader
-    db:AsyncSession = await get_db()
+    database:AsyncSession = await get_database()
                       ^^^^^^^^^^^^^^
 TypeError: object async_generator can't be used in 'await' expression
 2026-02-10 13:07:22,019 - INFO - 1 change detected
@@ -2303,9 +2303,9 @@ Traceback (most recent call last):
     uploader = await upload.run(files)
                ^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\services\file_service\file_uploader.py", line 87, in run
-    await self.save_file_name(self.db,filename,unique_filename)
+    await self.save_file_name(self.database,filename,unique_filename)
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\services\file_service\file_uploader.py", line 128, in save_file_name
-    db.add(new_file)
+    database.add(new_file)
     ^^^^^^
 AttributeError: 'function' object has no attribute 'add'
 2026-02-11 06:50:27,157 - INFO - 1 change detected
@@ -2435,7 +2435,7 @@ asyncio.exceptions.CancelledError
     return await anext(self.gen)
            ^^^^^^^^^^^^^^^^^^^^^
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\core\lifespan.py", line 12, in lifespan
-    app.state.db_engine = async_engine
+    app.state.database_engine = async_engine
                           ^^^^^^^^^^^^
 NameError: name 'async_engine' is not defined
 
@@ -2470,7 +2470,7 @@ NameError: name 'async_engine' is not defined
     return await anext(self.gen)
            ^^^^^^^^^^^^^^^^^^^^^
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\core\lifespan.py", line 12, in lifespan
-    app.state.db_engine = async_engine
+    app.state.database_engine = async_engine
                           ^^^^^^^^^^^^
 NameError: name 'async_engine' is not defined
 
@@ -3112,9 +3112,9 @@ Traceback (most recent call last):
     uploader = await upload.run(files)
                ^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\services\file_service\file_uploader.py", line 81, in run
-    await self.save_file_name(self.db,filename,unique_filename)
+    await self.save_file_name(self.database,filename,unique_filename)
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\services\file_service\file_uploader.py", line 122, in save_file_name
-    db.add(new_file)
+    database.add(new_file)
     ^^^^^^
 AttributeError: 'function' object has no attribute 'add'
 2026-02-12 13:28:26,346 - INFO - 1 change detected
@@ -3388,7 +3388,7 @@ Traceback (most recent call last):
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\services\file_service\file_uploader.py", line 81, in run
     await self.save_file_name(filename,unique_filename)
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\services\file_service\file_uploader.py", line 122, in save_file_name
-    self.db.add(new_file)
+    self.database.add(new_file)
     ^^^^^^^^^^^
 AttributeError: 'function' object has no attribute 'add'
 2026-02-12 13:40:45,372 - INFO - 1 change detected
@@ -3546,7 +3546,7 @@ Traceback (most recent call last):
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\services\file_service\file_uploader.py", line 81, in run
     await self.save_file_name(filename,unique_filename)
   File "C:\Users\NEC\Documents\projects\AnswerFlow\backend\services\file_service\file_uploader.py", line 122, in save_file_name
-    self.db.add(new_file)
+    self.database.add(new_file)
     ^^^^^^^^^^^
 AttributeError: 'function' object has no attribute 'add'
 2026-02-12 14:19:35,994 - INFO - 1 change detected

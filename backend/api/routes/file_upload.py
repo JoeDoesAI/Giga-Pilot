@@ -4,8 +4,8 @@ from fastapi import APIRouter, Request, File, UploadFile, HTTPException, Depends
 from api.deps.auth import get_current_user
 from schemas.file import UploadResponse
 from api.deps.service_deps import get_uploader,get_ingestion
-from services.file_service.file_uploader import FileUploader
-from services.ingestion_service.ochestrator import IngestionOchestrator
+from services.File.file_uploader import FileUploader
+from services.Ingestion.ochestrator import IngestionOchestrator
 
 uploader_router = APIRouter()
 

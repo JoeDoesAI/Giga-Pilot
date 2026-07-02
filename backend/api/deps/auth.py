@@ -1,9 +1,8 @@
 from typing import Annotated
 
 
-
 import jwt
-from fastapi import HTTPException,status,Depends
+from fastapi import HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 
@@ -15,7 +14,8 @@ ALGORITHM = Settings.HASHING_ALGORITHM
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-async def get_current_user(token:Annotated[str, Depends(oauth2_scheme)]):
+
+async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -25,13 +25,12 @@ async def get_current_user(token:Annotated[str, Depends(oauth2_scheme)]):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email = payload.get("sub")
+        role = payload.get("role", "user")
 
         if email is None:
             raise credentials_exception
-        
-        # token_data = TokenData(email=email)
 
     except InvalidTokenError:
         raise credentials_exception
 
-    return email
+    return {"email": email, "role": role}

@@ -1,16 +1,15 @@
-from sqlalchemy import Column, String, Integer
-from db.postgre.engine import Base
-
+from sqlalchemy import String, Integer
+from sqlalchemy.orm import Mapped, mapped_column
+from database.postgre.engine import Base
 
 
 class QueryLog(Base):
-    __tablename__  = "query_log"
+    __tablename__ = "query_log"
 
-    id = Column(Integer, primary_key=True, index=True)
-    date = Column(String, index=True)
-    time =  Column(String, index=True)
-    query_text = Column(String, index=True)
-    query_length = Column(Integer, index=True)
-    response = Column(String, index=True)
-    response_length = Column(String, index=True)
-    
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    date: Mapped[str] = mapped_column(String, index=True)
+    time: Mapped[str] = mapped_column(String, index=True)
+    query_text: Mapped[str] = mapped_column(String, index=True)
+    query_length: Mapped[int] = mapped_column(Integer, index=True)
+    response: Mapped[str] = mapped_column(String, index=True)
+    response_length: Mapped[str] = mapped_column(String, index=True)

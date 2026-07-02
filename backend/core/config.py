@@ -15,10 +15,6 @@ class Settings:
     #LLM API KEY
     GROQ_API_KEY:str = os.getenv("GROQ_API_KEY")
 
-    # Vector Store
-    QDRANT_URL: str = os.getenv("QDRANT_URL")
-    QDRANT_API_KEY:str = os.getenv("QDRANT_API_KEY")
-
     # Model Settings
     EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL")
     EMBEDDING_API_KEY: str = os.getenv("EMBEDDING_API_KEY")

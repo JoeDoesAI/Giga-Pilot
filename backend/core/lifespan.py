@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from supabase import create_async_client
 from slack_bolt.adapter.socket_mode.async_handler import AsyncSocketModeHandler
 
-from db.postgre.engine import engine, Base
+from database.postgre.engine import engine, Base
 from api.routes.slack import slack_app
 
 
@@ -16,22 +16,21 @@ SUPABASE_URL = Settings.SUPABASE_URL
 SUPABASE_KEY = Settings.SUPABASE_KEY
 app_token = Settings.SLACK_APP_TOKEN
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    socket_handler = AsyncSocketModeHandler(app= slack_app, app_token= app_token)
-    
+    socket_handler = AsyncSocketModeHandler(app=slack_app, app_token=app_token)
+
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-    
+
     app.state.supabase = await create_async_client(SUPABASE_URL, SUPABASE_KEY)
 
     slack_task = asyncio.create_task(socket_handler.start_async())
 
     yield
-    
+
     await engine.dispose()
-        
+
     await socket_handler.close_async()
     slack_task.cancel()
-   
-   

@@ -3,7 +3,7 @@ from typing import List
 
 from docling.datamodel.base_models import DocumentStream
 from sqlalchemy import select
-from db.postgre.session import AsyncSession
+from database.postgre.session import AsyncSession
 from docling.document_converter import DocumentConverter
 from models.postgre.file import File
 from core.config import Settings
@@ -12,9 +12,9 @@ from docling.chunking import HybridChunker
 
 
 class FileParser:
-    def __init__(self, supabase_client: AsyncClient, db: AsyncSession):
+    def __init__(self, supabase_client: AsyncClient, database: AsyncSession):
         self.supabase = supabase_client
-        self.db = db
+        self.database = database
 
         self.bucket = Settings.SUPABASE_BUCKET
 
@@ -29,7 +29,7 @@ class FileParser:
 
         records = await self._chunk_files(parsed)
         return records
-    
+
     async def _load_docs(self) -> List[dict]:
         files = await self.supabase.strong.from_(self.bucket).list("uploads")
 
@@ -149,9 +149,10 @@ class FileParser:
         return formatted_records
 
     async def _get_original_filename(self, file_name: str) -> str:
-        get_filename = select(File.original_name).where(File.stored_name == file_name)
-        result = await self.db.execute(get_filename)
+        from database.postgre.crud import get_original_filename_by_stored_name
 
-        original_name = result.scalar_one_or_none()
+        original_name = await get_original_filename_by_stored_name(
+            self.database, file_name
+        )
 
         return original_name
