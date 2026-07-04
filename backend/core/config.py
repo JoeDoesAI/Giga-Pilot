@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+
 load_dotenv()
 
 
@@ -29,4 +29,5 @@ class Settings:
     SLACK_BOT_TOKEN:str = os.getenv("SLACK_BOT_TOKEN")
     SLACK_SIGNING_SECRET:str = os.getenv("SLACK_SIGNING_SECRET")
     SLACK_APP_TOKEN:str = os.getenv("SLACK_APP_TOKEN")
+    REDIS_URL: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
   

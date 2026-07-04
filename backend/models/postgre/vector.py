@@ -8,7 +8,7 @@ from pgvector.sqlalchemy import Vector
 from database.postgre.engine import Base
 
 
-class DocumentChnk(Base):
+class DocumentChunk(Base):
     """Retrieval-ready passage with embedding for semantic search"""
 
     __tablename__ = "document_chunks"
@@ -23,4 +23,4 @@ class DocumentChnk(Base):
     )  # Adjust vector dimension to your embedding model
     source: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     page_number: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
-    metadata: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    citations: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)

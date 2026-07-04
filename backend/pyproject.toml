@@ -7,8 +7,10 @@ requires-python = ">=3.12"
 
 exclude-newer = "7 days"
 dependencies = [
+    "aiohttp>=3.14.1",
     "alembic>=1.18.5",
     "asyncpg>=0.31.0",
+    "celery>=5.6.3",
     "docling>=2.108.0",
     "fastapi[standard]>=0.138.2",
     "google-genai>=2.10.0",
@@ -16,7 +18,11 @@ dependencies = [
     "pgvector>=0.4.2",
     "pwdlib[argon2]>=0.3.0",
     "pydantic>=2.13.4",
+    "pydantic-ai>=2.5.0",
+    "pydantic-ai-slim[groq]>=2.5.0",
+    "redis>=8.0.1",
     "slack>=0.0.2",
+    "slack-bolt>=1.29.0",
     "sqlalchemy>=2.0.51",
     "supabase>=2.31.0",
 ]

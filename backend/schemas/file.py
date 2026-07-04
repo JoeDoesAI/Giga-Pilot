@@ -1,13 +1,14 @@
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel
 
 
+class FileStatus(BaseModel):
+    filename: str
+    success: bool
+    error: Optional[str] = None
+
+
 class UploadResponse(BaseModel):
-    files_status: List[dict]
-
-
-# class IngestStatus(BaseModel):
-#     file_name: str
-#     upload_staus: list
-#     file_size: int
-    
+    task_id: str
+    status_url: str
+    files_status: List[FileStatus]

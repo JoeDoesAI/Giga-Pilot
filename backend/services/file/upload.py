@@ -11,8 +11,6 @@ from supabase import AsyncClient
 
 from core.config import Settings
 
-from schemas.file import UploadResponse
-
 
 class FileUploader:
     """
@@ -47,7 +45,7 @@ class FileUploader:
         self.allowed_extensions = allowed_extensions
         self.supabase_bucket = bucket
 
-    async def run(self, files: List[UploadFile]) -> UploadResponse:
+    async def run(self, files: List[UploadFile]) -> dict:
         upload_state: List = []
 
         for file in files:
@@ -63,7 +61,7 @@ class FileUploader:
                     {
                         "filename": filename,
                         "success": False,
-                        "errors": validate_file["error"],
+                        "error": validate_file["error"],
                     }
                 )
 
@@ -91,7 +89,7 @@ class FileUploader:
                 }
             )
 
-        return UploadResponse(files_status=upload_state)
+        return {"files_status": upload_state}
 
     async def validate_file(self, file: UploadFile) -> dict:
 

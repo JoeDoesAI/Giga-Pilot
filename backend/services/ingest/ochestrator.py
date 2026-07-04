@@ -1,9 +1,9 @@
 import asyncio
 from typing import List
 
-from services.File.file_parser import FileParser
-from services.Embedding.embedding import EmbeddingService
-from services.Ingestion.store_vectors import VectorDatabase
+from services.file.parse import FileParser
+from services.embedding.embedding import EmbeddingService
+from services.ingest.store_vectors import VectorDatabase
 
 
 class IngestionOchestrator:
@@ -18,7 +18,10 @@ class IngestionOchestrator:
         self.vector_store = vector_store
 
     async def run(self) -> str:
-        documents = await self.parse_file.run()
+        documents = await self.parse_file.parse_all()
+        if not documents:
+            return "No documents found for ingestion."
+
         embeddings = self.embedder.run(documents)
 
         for doc, embedding in zip(documents, embeddings):

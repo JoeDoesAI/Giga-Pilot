@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from core.security import verify_password
 from models.postgre.user import User
 from models.postgre.file import File
-from models.postgre.vector import DocumentChnk
+from models.postgre.vector import DocumentChunk
 
 
 async def get_user_by_email(database: AsyncSession, email: str) -> Optional[User]:
@@ -87,7 +87,7 @@ async def create_vector_record(
     document_id: Optional[str] = None,
     chunk_id: Optional[str] = None,
 ) -> DocumentChunk:
-    new_record = DocumentChnk(
+    new_record = DocumentChunk(
         document_id=document_id,
         chunk_id=chunk_id,
         embedding=embedding,
@@ -107,8 +107,8 @@ async def search_vector_records(
     database: AsyncSession, query_embedding, limit: int = 5
 ) -> list[DocumentChunk]:
     stmt = (
-        select(DocumentChnk)
-        .order_by(DocumentChnk.embedding.cosine_distance(query_embedding))
+        select(DocumentChunk)
+        .order_by(DocumentChunk.embedding.cosine_distance(query_embedding))
         .limit(limit)
     )
     result = await database.execute(stmt)

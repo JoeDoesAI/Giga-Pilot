@@ -1,6 +1,6 @@
 from slack_bolt.async_app import AsyncApp 
 from core.config import Settings
-from services.agent_service.llm import agent
+from services.agent.llm import agent
 
 
 bot_token = Settings.SLACK_BOT_TOKEN

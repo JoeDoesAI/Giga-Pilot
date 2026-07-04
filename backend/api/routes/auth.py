@@ -3,13 +3,13 @@ from datetime import timedelta
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from api.deps.database_deps import get_database
+from api.deps.database import get_database
 from core.config import Settings
 from core.security import create_access_token, hash_password
 from database.postgre.session import AsyncSession
 from schemas.token_bearer import Token
 from schemas.auth import UserCreate, UserLogin
-from services.auth_service.auth import authenticate_user, create_user
+from services.auth.auth import create_user, authenticate_user
 from database.postgre.crud import get_user_by_email
 
 
