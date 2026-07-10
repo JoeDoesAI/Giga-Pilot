@@ -11,11 +11,12 @@ from schemas.token_bearer import Token
 from schemas.auth import UserCreate, UserLogin
 from services.auth.auth import create_user, authenticate_user
 from database.postgre.crud import get_user_by_email
+from core.config import Settings
 
 
 auth_router = APIRouter()
 
-ACCESS_CODE = os.getenv("ACCESS_CODE")
+ACCESS_CODE = Settings.ACCESS_CODE
 
 
 @auth_router.post("/register")
@@ -28,6 +29,7 @@ async def register(user: UserCreate, database: AsyncSession = Depends(get_databa
 
     # only allow creating admin if correct access code provided
     role = (user.role or "user").lower()
+
     if role == "admin":
         if not user.access_code or user.access_code != ACCESS_CODE:
             raise HTTPException(status_code=403, detail="Invalid admin access code")
