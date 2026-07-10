@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, File, UploadFile, Depends, HTTPException, status
 from celery.result import AsyncResult
 
-from api.deps.auth import get_current_user, get_current_admin_user
+from api.deps.auth import get_current_admin_user
 from api.deps.service import get_uploader
 from celery_app import celery_app
 from services.file.upload import FileUploader
@@ -16,7 +16,7 @@ uploader_router = APIRouter(tags=["ingestion"])
 
 @uploader_router.post("/upload-docs", response_model=UploadResponse, status_code=status.HTTP_202_ACCEPTED)
 async def upload_docs(
-    current_user=Depends(get_current_user),
+    current_user=Depends(get_current_admin_user),
     files: List[UploadFile] = File(...),
     upload: FileUploader = Depends(get_uploader),
 ):
@@ -27,6 +27,7 @@ async def upload_docs(
         )
 
     upload_result = await upload.run(files)
+
     celery_task = ingest_files.apply_async()
 
     return UploadResponse(

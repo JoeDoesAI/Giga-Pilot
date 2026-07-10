@@ -21,8 +21,12 @@ app_token = Settings.SLACK_APP_TOKEN
 async def lifespan(app: FastAPI):
     socket_handler = AsyncSocketModeHandler(app=slack_app, app_token=app_token)
 
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    try:
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+
+    except Exception as e:
+        print(f"Warning: Failed to initialize database: {e}")
 
     app.state.supabase = await create_async_client(SUPABASE_URL, SUPABASE_KEY)
 
